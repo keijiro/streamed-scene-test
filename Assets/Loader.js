@@ -31,11 +31,11 @@ function Start() {
 
 		yield WaitForSeconds(1);
 
-		Application.LoadLevelAdditive(sceneNames[1]);
+		yield Application.LoadLevelAdditiveAsync(sceneNames[1]);
 
 		yield WaitForSeconds(1);
 
-		Application.LoadLevelAdditive(sceneNames[0]);
+		yield Application.LoadLevelAdditiveAsync(sceneNames[0]);
 
 		yield WaitForSeconds(1);
 	}
