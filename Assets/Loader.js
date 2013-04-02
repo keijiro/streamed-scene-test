@@ -1,14 +1,42 @@
 #pragma strict
 
-function Start () {
-	var path = "file://" + Application.streamingAssetsPath + "/Streamed-External.unity3d";
-	var www = WWW(path);
-	yield www;
+var sceneNames = ["External1", "External2"];
 
-	if (www.error) {
-		Debug.LogError(www.error);
-	} else {
-		var bundle = www.assetBundle;
-		Application.LoadLevel("External");
+private var bundles = ArrayList();
+
+function Start() {
+	DontDestroyOnLoad(gameObject);
+
+	for (var name in sceneNames) {
+		var www = WWW("file://" + Application.streamingAssetsPath + "/" + name + ".unity3d");
+		yield www;
+
+		if (www.error) {
+			Debug.LogError(www.error);
+		} else {
+			bundles.Add(www.assetBundle);
+		}
+	}
+
+	while (true) {
+		Application.LoadLevel(sceneNames[0]);
+
+		yield WaitForSeconds(1);
+
+		Application.LoadLevel(sceneNames[1]);
+
+		yield WaitForSeconds(1);
+
+		Application.LoadLevel(sceneNames[0]);
+
+		yield WaitForSeconds(1);
+
+		Application.LoadLevelAdditive(sceneNames[1]);
+
+		yield WaitForSeconds(1);
+
+		Application.LoadLevelAdditive(sceneNames[0]);
+
+		yield WaitForSeconds(1);
 	}
 }
